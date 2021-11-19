@@ -7,6 +7,14 @@
 
                 <br /><br />
 
+                <?php
+                   if (isset($_SESSION['add'])) {
+                       echo $_SESSION['add']; //Displaying Session Message
+                       unset($_SESSION['add']); //Removing Session Message
+                   }
+                ?>
+                <br><br><br>
+
                 <!-- Button to add admin -->
                 <a href="add-admin.php" class="btn-primary">Add Admin</a>
 
@@ -20,10 +28,34 @@
                         <th>Actions</th>
                     </tr>
 
-                    <tr>
-                        <td>1.</td>
-                        <td>Masum Mushfiq</td>
-                        <td>masummushfiq</td>
+
+                    <?php
+                       //Query to Get all admin
+                       $sql = 'SELECT * FROM tbl_admin';
+                       //Execute theQuerry
+                       $res = mysqli_query($conn, $sql);
+                       //check whether the querry is executed of not
+                       if ($res == true) {
+                           //count rows
+                           $rows = mysqli_num_rows($res); // Function to get all the rows
+                           $sn = 1; //Create a varialbe assign the value
+                           //check the num of rows
+                           if ($rows > 0) {
+                               //we have database
+                               while ($rows = mysqli_fetch_assoc($res)) {
+                                   //using while loop to get all data
+                                   //And while loopwill runas long as we have data in data base
+                                   //Get individual data
+                                   $id = $rows['id'];
+                                   $full_name = $rows['full_name'];
+                                   $username = $rows['username'];
+
+                                   //display the value?>
+
+                   <tr>
+                        <td><?php echo $sn++; ?></td>
+                        <td><?php echo $full_name; ?></td>
+                        <td><?php echo $username; ?></td>
                         <td>
                             <a href="#" class="btn-secondary">Update Admin</a>
                             <a href="#" class="btn-danger">Delete Admin</a>
@@ -31,27 +63,16 @@
                         
                     </tr>
 
-                    <tr>
-                        <td>2.</td>
-                        <td>Masum Mushfiq</td>
-                        <td>masummushfiq</td>
-                        <td>
-                            <a href="#" class="btn-secondary">Update Admin</a>
-                            <a href="#" class="btn-danger">Delete Admin</a>
-                        </td>
-                        
-                    </tr>
+                    <?php
+                               }
+                           } else {
+                               //we do not have data base
+                           }
+                       }
 
-                    <tr>
-                        <td>3.</td>
-                        <td>Masum Mushfiq</td>
-                        <td>masummushfiq</td>
-                        <td>
-                            <a href="#" class="btn-secondary">Update Admin</a>
-                            <a href="#" class="btn-danger">Delete Admin</a>
-                        </td>
-                        
-                    </tr>
+                    ?>
+
+                   
                 </table>
 
                 

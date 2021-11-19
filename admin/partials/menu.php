@@ -1,3 +1,6 @@
+<?php include '../css/config/constants.php'; ?>
+
+
 <html>
     <head>
         <title>Restaureant Mangement - Home Page</title>

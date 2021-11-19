@@ -6,6 +6,13 @@
 
         <br><br>
 
+        <?php
+           if (isset($_SESSION['add'])) {
+               echo $_SESSION['add'];
+               unset($_SESSION['add']);
+           }
+        ?>
+
         <form action="" method="POST">
 
              <table class="tbl-30">
@@ -50,31 +57,41 @@
     //process the value from Form and Save it in Database
     //check whether the button is clicked or not
 
-    if(isset($_POST['submit']))
-    {
+    if (isset($_POST['submit'])) {
         //Button clicked
         //echo "Button Clicked";
 
         //Get the Data From form
-         $full_name = $_POST['full_name'];
-         $username = $_POST['username'];
-         $password = md5($_POST['password']); //Password Encryption with md5
+        $full_name = $_POST['full_name'];
+        $username = $_POST['username'];
+        $password = md5($_POST['password']); //Password Encryption with md5
 
-         //sql Querry to Save The data into database
-         $sql = "INSERT INTO tbl_admin SET
+        //sql Querry to Save The data into database
+        $sql = "INSERT INTO tbl_admin SET
               full_name ='$full_name',
               username ='$username',
               password ='$password'
          ";
 
-         // Execute Querry and Save Data in Database
-         $conn = mysqli_connect('localhost','root','') or die(mysqli_error()); //Database Connection
-         $db_select = mysqli_select_db($conn,'restaurant-mangement') or die (mysqli_error()); // Selecting Database
-         
-         
-        // $res = mysqli_query($conn,$sql) or die(mysqli_error());
-    }
-    
+        // Execute Querry and Save Data in Database
+         $conn = mysqli_connect('localhost', 'root', '') or die(mysqli_error()); //Database Connection
+         $db_select = mysqli_select_db($conn, 'restaurant-mangement') or die(mysqli_error()); // Selecting Database
 
+         $res = mysqli_query($conn, $sql) or die(mysqli_error());
+
+        if ($res == true) {
+            //echo 'Data Inserted';
+            //Creeate a Session Variable to Display message;
+            $_SESSION['add'] = 'Admin Added Successfully';
+            //Redirect Page
+            header('location:'.SITEURL.'admin/manage-admin.php');
+        } else {
+            // echo 'Failed To Insert';
+            //Creeate a Session Variable to Display message;
+            $_SESSION['add'] = 'Failed to Add Admin';
+            //Redirect Page
+            header('location:'.SITEURL.'admin/manage-admin.php');
+        }
+    }
 
 ?>
