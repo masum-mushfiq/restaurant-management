@@ -82,13 +82,13 @@
         if ($res == true) {
             //echo 'Data Inserted';
             //Creeate a Session Variable to Display message;
-            $_SESSION['add'] = 'Admin Added Successfully';
+            $_SESSION['add'] = '<div class="success">Admin Added Successfully.</div>';
             //Redirect Page
             header('location:'.SITEURL.'admin/manage-admin.php');
         } else {
             // echo 'Failed To Insert';
             //Creeate a Session Variable to Display message;
-            $_SESSION['add'] = 'Failed to Add Admin';
+            $_SESSION['add'] = '<div class="error">Failed to Added Admin. Try Again Later.</div>';
             //Redirect Page
             header('location:'.SITEURL.'admin/manage-admin.php');
         }
