@@ -8,57 +8,147 @@ include '<partials/menu.php'; ?>
 
          <br /><br />
 
+         <?php
+
+if (isset($_SESSION['add'])) {
+    echo $_SESSION['add'];
+    unset($_SESSION['add']);
+}
+
+if(isset($_SESSION['remove']))
+{
+    echo $_SESSION['remove'];
+    unset($_SESSION['remove']);
+}
+
+if(isset($_SESSION['delete']))
+{
+    echo $_SESSION['delete'];
+    unset($_SESSION['delete']);
+}
+
+if(isset($_SESSION['no-category-found']))
+{
+    echo $_SESSION['no-category-found'];
+    unset($_SESSION['no-category-found']);
+}
+
+if(isset($_SESSION['update']))
+{
+    echo $_SESSION['update'];
+    unset($_SESSION['update']);
+}
+
+if(isset($_SESSION['upload']))
+{
+    echo $_SESSION['upload'];
+    unset($_SESSION['upload']);
+}
+
+if(isset($_SESSION['failed-remove']))
+{
+    echo $_SESSION['failed-remove'];
+    unset($_SESSION['failed-remove']);
+}
+
+?>
+<br><br>
+
 <!-- Button to add admin -->
-<a href="#" class="btn-primary">Add Category</a>
+<a href="<?php echo SITEURL; ?>admin/add-category.php" class="btn-primary">Add Category</a>
 
 <br /><br />
 
 <table class="tbl-full">
     <tr>
         <th>Serial No.</th>
-        <th>Full Name</th>
-        <th>Username</th>
-        <th>Actions</th>
+        <th>Title</th>
+        <th>Image</th>
+        <th>Featured</th>
+        <th>Active</th>
+        <th>Action</th>
     </tr>
+    <?php
+    //querry to get all category
+    $sql = 'SELECT * FROM tbl_category';
 
-    <tr>
-        <td>1.</td>
-        <td>Masum Mushfiq</td>
-        <td>masummushfiq</td>
-        <td>
-            <a href="#" class="btn-secondary">Update Admin</a>
-            <a href="#" class="btn-danger">Delete Admin</a>
-        </td>
-        
-    </tr>
+    //execute the query
+    $res = mysqli_query($conn, $sql);
 
-    <tr>
-        <td>2.</td>
-        <td>Masum Mushfiq</td>
-        <td>masummushfiq</td>
-        <td>
-            <a href="#" class="btn-secondary">Update Admin</a>
-            <a href="#" class="btn-danger">Delete Admin</a>
-        </td>
-        
-    </tr>
+    //count the rows
+    $count = mysqli_num_rows($res);
 
-    <tr>
-        <td>3.</td>
-        <td>Masum Mushfiq</td>
-        <td>masummushfiq</td>
-        <td>
-            <a href="#" class="btn-secondary">Update Admin</a>
-            <a href="#" class="btn-danger">Delete Admin</a>
-        </td>
+    //create serial number variable
+    $sn = 1;
+
+    //check data in database or not
+    if ($count > 0) {
+        //we have data in database
+        //get the data in display
+        while ($row = mysqli_fetch_assoc($res)) {
+            $id = $row['id'];
+            $title = $row['title'];
+            $image_name = $row['image_name'];
+            $featured = $row['featured'];
+            $active = $row['active']; ?>
+
+      
+            <tr>
+                 <td><?php echo $sn++; ?>.</td>
+                 <td><?php echo $title; ?></td>
+                 <td>
+                     <?php 
+                          // whwther image name is available
+                          if($image_name!="")
+                          {
+                              //display the image
+                              ?>
+
+                              <img src="<?php echo SITEURL;?>images/category/<?php echo $image_name; ?>"width="100px" >
+
+                              <?php
+                          }
+                          else
+                          {
+                              // display the message
+                              echo "<div class='error'>Image Not Added.</div>";
+                          }
+                     ?>
+                 </td>
+                 <td><?php echo $featured; ?></td>
+                 <td><?php echo $active; ?></td>
+                 
+                 <td>
+                 <a href="<?php echo SITEURL; ?>admin/update-category.php?id=<?php echo $id;?>" class="btn-secondary">Update Category</a>
+                 <a href="<?php echo SITEURL;?>admin/delete-category.php?id=<?php echo $id; ?>&image_name=<?php echo $image_name; ?>" class="btn-danger">Delete Category</a>
+                 </td>
         
-    </tr>
+            </tr>
+     
+
+            <?php
+        }
+    } else {
+        //we do not have data in database
+        //we'll displaythe message inside table
+        ?>
+        <tr>
+            <td colspan="6"><div class="error"> No Category Added</div></td>
+        </tr>
+
+        <?php
+    }
+    ?>
+
+    
+
+   
 </table>
     </div>
     
 </div>
 
 
-<?php include('partials/footer.php') ?>
+<?php include 'partials/footer.php'; ?>
 
 
